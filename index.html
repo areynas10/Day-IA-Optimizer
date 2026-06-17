@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -29,6 +30,7 @@
             }
         }
     </script>
+    
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -39,276 +41,289 @@
         .tab-btn.active { border-bottom-color: #1EC6BD; color: #1EC6BD; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER INSTITUCIONAL -->
-    <header class="bg-tec-dark-green text-white py-4 px-6 shadow-md shrink-0">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="h-9 w-9 bg-gradient-to-br from-tec-teal to-tec-lime rounded-xl flex items-center justify-center shadow-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
-                </div>
-                <div>
-                    <h1 class="font-poppins font-bold text-lg tracking-wide flex items-center gap-2">
-                        AI Recruiting Hub
-                        <span class="text-xs bg-tec-teal/20 text-tec-teal border border-tec-teal/30 px-2.5 py-0.5 rounded-full font-sans font-semibold">Atracción de Talento</span>
-                    </h1>
-                </div>
-            </div>
-            
-            <!-- CONTROLES GLOBALES -->
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <button onclick="openApiKeyModal()" id="apiStatusBadge" class="text-xs font-semibold text-rose-500 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-rose-100 transition-colors">
-                    <i class="fa-solid fa-key text-rose-400"></i>
-                    <span>Sin API Key (Haga Clic Aquí)</span>
-                </button>
-                <span class="text-xs text-tec-teal/40 hidden md:inline">|</span>
-                <span class="text-xs font-semibold text-tec-teal bg-tec-teal/10 border border-tec-teal/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-tie text-tec-teal"></i>
-                    Argyris Reyna
-                </span>
-            </div>
-        </div>
-    </header>
-
-    <!-- NAVEGACIÓN DE SECCIONES -->
-    <nav class="bg-white border-b border-slate-200 shadow-sm shrink-0">
-        <div class="max-w-7xl mx-auto px-6 flex gap-6">
-            <button onclick="switchTab('tab-matrix')" id="btn-tab-matrix" class="tab-btn active py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
-                <i class="fa-solid fa-table-cells-large"></i> Matriz de Prioridades
-            </button>
-            <button onclick="switchTab('tab-polisher')" id="btn-tab-polisher" class="tab-btn py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
-                <i class="fa-solid fa-sparkles text-tec-teal"></i> Pulidor de Notas
-            </button>
-        </div>
-    </nav>
-
-    <!-- CONTENEDOR PRINCIPAL -->
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 min-h-0 relative">
-        
-        <!-- ================================================== -->
-        <!-- SECCIÓN 1: MATRIZ DE PRIORIDADES (EISENHOWER)      -->
-        <!-- ================================================== -->
-        <div id="tab-matrix" class="tab-content flex flex-col lg:flex-row gap-6 h-full">
-            
-            <!-- Vaciado de Mente -->
-            <section class="w-full lg:w-[350px] shrink-0 flex flex-col gap-4">
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full min-h-[350px] lg:min-h-0">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
-                            <i class="fa-solid fa-brain text-tec-teal"></i>
-                            Vaciado de Mente
-                        </h2>
-                        <button onclick="clearMindDumpText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-eraser"></i> Limpiar
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">
-                        Escribe tus pendientes del día sin estructura. La IA los interpretará y distribuirá en los cuadrantes institucionales correspondientes.
-                    </p>
-                    <div class="relative flex-grow flex flex-col min-h-[220px]">
-                        <textarea id="mindDumpArea" 
-                            class="w-full flex-grow p-4 text-sm bg-tec-sand/20 border border-tec-sand/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
-                            placeholder="Ejemplo:&#10;- Subir vacante de Coordinador a SSFF.&#10;- Calibrar sueldo con el líder.&#10;- Diseñar el microtest del reto situacional."
-                        ></textarea>
-                    </div>
-                    <button onclick="organizeWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all group">
-                        <i class="fa-solid fa-wand-magic-sparkles group-hover:rotate-12 transition-transform"></i>
-                        <span>Clasificar con IA</span>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Matriz de Cuadrantes -->
-            <section class="flex-grow flex flex-col gap-4 min-h-0 relative">
-                <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-200/60 flex flex-wrap justify-between items-center gap-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Historial:</span>
-                        <input type="date" id="datePicker" onchange="changeActiveDate()" class="text-xs font-bold text-tec-dark-green bg-tec-sand/40 border border-tec-sand px-2 py-1 rounded focus:outline-none focus:ring-1 focus:ring-tec-teal">
-                        <span id="rolloverIndicator" class="hidden text-[10px] text-tec-lime font-bold bg-tec-lime/10 px-2 py-0.5 rounded border border-tec-lime/20 flex items-center gap-1">
-                            <i class="fa-solid fa-arrows-spin"></i> Rollover Activo
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="clearDayTasks()" class="text-xs hover:bg-rose-50 text-rose-600 font-semibold px-3 py-1.5 rounded-lg border border-rose-200 transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-trash-can"></i> Limpiar Matrices
-                        </button>
-                        <button onclick="copyToClipboard()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
-                            <i class="fa-solid fa-copy"></i> Copiar Plan (Outlook)
-                        </button>
-                    </div>
-                </div>
-
-                <div id="aiLoader" class="hidden bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 flex flex-col items-center justify-center gap-4 text-center absolute inset-0 z-50">
-                    <div class="relative w-12 h-12">
-                        <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
-                        <div class="absolute inset-0 border-4 border-t-tec-teal rounded-full animate-spin"></div>
+    <div class="flex flex-col flex-grow">
+        <!-- HEADER INSTITUCIONAL -->
+        <header class="bg-tec-dark-green text-white py-4 px-6 shadow-md shrink-0">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 bg-gradient-to-br from-tec-teal to-tec-lime rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
                     </div>
                     <div>
-                        <h3 class="font-poppins font-bold text-sm text-tec-dark-green mb-1">Analizando Criterios de Atracción de Talento...</h3>
-                        <p class="text-xs text-slate-500">Categorizando según políticas institucionales y SLAs.</p>
+                        <h1 class="font-poppins font-bold text-lg tracking-wide flex items-center gap-2">
+                            AI Recruiting Hub
+                            <span class="text-xs bg-tec-teal/20 text-tec-teal border border-tec-teal/30 px-2.5 py-0.5 rounded-full font-sans font-semibold font-poppins">Atracción de Talento</span>
+                        </h1>
                     </div>
                 </div>
-
-                <div id="matrixContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-0 overflow-y-auto pr-1">
-                    <!-- Q1 -->
-                    <div class="matrix-quadrant bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden flex flex-col h-[280px]">
-                        <div class="bg-rose-50 border-b border-rose-100/60 px-4 py-3 flex justify-between items-center shrink-0">
-                            <span class="font-poppins font-bold text-xs text-rose-700 flex items-center gap-1.5 uppercase tracking-wide">
-                                <span class="h-2 w-2 rounded-full bg-rose-500"></span>
-                                I. Crítico (Políticas, SLAs y Ofertas)
-                            </span>
-                        </div>
-                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q1-list"></div>
-                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
-                            <input type="text" id="q1-input" placeholder="Agregar crítico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-rose-400" onkeydown="handleInputKey(event, 'q1')">
-                            <button onclick="addTaskDirect('q1')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <!-- Q2 -->
-                    <div class="matrix-quadrant bg-white rounded-2xl border border-tec-teal/20 shadow-sm overflow-hidden flex flex-col h-[280px]">
-                        <div class="bg-tec-teal/5 border-b border-tec-teal/10 px-4 py-3 flex justify-between items-center shrink-0">
-                            <span class="font-poppins font-bold text-xs text-tec-dark-green flex items-center gap-1.5 uppercase tracking-wide">
-                                <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
-                                II. Estratégico (Proyectos y Sourcing)
-                            </span>
-                        </div>
-                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q2-list"></div>
-                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
-                            <input type="text" id="q2-input" placeholder="Agregar estratégico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q2')">
-                            <button onclick="addTaskDirect('q2')" class="bg-tec-dark-green hover:bg-tec-teal text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <!-- Q3 -->
-                    <div class="matrix-quadrant bg-white rounded-2xl border border-tec-ice shadow-sm overflow-hidden flex flex-col h-[280px]">
-                        <div class="bg-tec-ice/10 border-b border-tec-ice/20 px-4 py-3 flex justify-between items-center shrink-0">
-                            <span class="font-poppins font-bold text-xs text-teal-800 flex items-center gap-1.5 uppercase tracking-wide">
-                                <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
-                                III. Filtrar / Automatizar (SSFF y Chats)
-                            </span>
-                        </div>
-                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q3-list"></div>
-                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
-                            <input type="text" id="q3-input" placeholder="Agregar operativo..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q3')">
-                            <button onclick="addTaskDirect('q3')" class="bg-tec-teal hover:bg-teal-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <!-- Q4 -->
-                    <div class="matrix-quadrant bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[280px]">
-                        <div class="bg-slate-100 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
-                            <span class="font-poppins font-bold text-xs text-slate-700 flex items-center gap-1.5 uppercase tracking-wide">
-                                <span class="h-2 w-2 rounded-full bg-slate-400"></span>
-                                IV. Depurar / Postergar (Admin)
-                            </span>
-                        </div>
-                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q4-list"></div>
-                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
-                            <input type="text" id="q4-input" placeholder="Agregar postergable..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400" onkeydown="handleInputKey(event, 'q4')">
-                            <button onclick="addTaskDirect('q4')" class="bg-slate-500 hover:bg-slate-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
+                
+                <!-- CONTROLES GLOBALES -->
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <button onclick="openApiKeyModal()" id="apiStatusBadge" class="text-xs font-semibold text-rose-500 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-rose-100 transition-colors">
+                        <i class="fa-solid fa-key text-rose-400"></i>
+                        <span>Cargando Estado de IA...</span>
+                    </button>
+                    <span class="text-xs text-tec-teal/40 hidden md:inline">|</span>
+                    <span class="text-xs font-semibold text-tec-teal bg-tec-teal/10 border border-tec-teal/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-tie text-tec-teal"></i>
+                        Argyris Reyna
+                    </span>
                 </div>
-            </section>
-        </div>
+            </div>
+        </header>
 
-        <!-- ================================================== -->
-        <!-- SECCIÓN 2: PULIDOR DE NOTAS (POLISHER)             -->
-        <!-- ================================================== -->
-        <div id="tab-polisher" class="tab-content hidden flex flex-col lg:flex-row gap-6 h-full">
+        <!-- NAVEGACIÓN DE SECCIONES -->
+        <nav class="bg-white border-b border-slate-200 shadow-sm shrink-0">
+            <div class="max-w-7xl mx-auto px-6 flex gap-6">
+                <button onclick="switchTab('tab-matrix')" id="btn-tab-matrix" class="tab-btn active py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-table-cells-large"></i> Matriz de Prioridades
+                </button>
+                <button onclick="switchTab('tab-polisher')" id="btn-tab-polisher" class="tab-btn py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-sparkles text-tec-teal"></i> Pulidor de Notas
+                </button>
+            </div>
+        </nav>
+
+        <!-- CONTENEDOR PRINCIPAL -->
+        <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 min-h-0 relative">
             
-            <!-- Notas en Frío -->
-            <section class="w-full lg:w-[500px] shrink-0 flex flex-col gap-4">
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
-                            <i class="fa-solid fa-file-pen text-tec-teal"></i>
-                            Notas en Frío o CV
-                        </h2>
-                        <button onclick="clearDirtyNotesText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-eraser"></i> Limpiar
+            <!-- ================================================== -->
+            <!-- SECCIÓN 1: MATRIZ DE PRIORIDADES (EISENHOWER)      -->
+            <!-- ================================================== -->
+            <div id="tab-matrix" class="tab-content flex flex-col lg:flex-row gap-6 h-full">
+                
+                <!-- Vaciado de Mente -->
+                <section class="w-full lg:w-[350px] shrink-0 flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full min-h-[350px] lg:min-h-0">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                                <i class="fa-solid fa-brain text-tec-teal"></i>
+                                Vaciado de Mente
+                            </h2>
+                            <button onclick="clearMindDumpText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-eraser"></i> Limpiar
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">
+                            Escribe tus pendientes del día sin estructura. La IA los interpretará y distribuirá en los cuadrantes institucionales correspondientes.
+                        </p>
+                        <div class="relative flex-grow flex flex-col min-h-[220px]">
+                            <textarea id="mindDumpArea" 
+                                class="w-full flex-grow p-4 text-sm bg-tec-sand/20 border border-tec-sand/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
+                                placeholder="Ejemplo:&#10;- Subir vacante de Coordinador a SSFF.&#10;- Calibrar sueldo con el líder.&#10;- Diseñar el microtest del reto situacional."
+                            ></textarea>
+                        </div>
+                        <button onclick="organizeWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all group">
+                            <i class="fa-solid fa-wand-magic-sparkles group-hover:rotate-12 transition-transform"></i>
+                            <span>Clasificar con IA</span>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">
-                        Pega los apuntes o el "choro" desordenado. La IA lo resumirá, le quitará el relleno y lo dejará directo y profesional.
-                    </p>
+                </section>
 
-                    <div class="mb-3">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Perfil Orientado:</label>
-                        <select id="profileTemplate" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal text-slate-700 font-medium">
-                            <option value="general">Reclutamiento General (Tecmilenio)</option>
-                            <option value="asesor">Asesor Académico / Ventas Educativas</option>
-                            <option value="ti">Especialista TI / Ingenierías / Dual</option>
-                            <option value="admin">Administrativo / Mandos Medios</option>
-                        </select>
-                    </div>
-                    
-                    <div class="relative flex-grow flex flex-col min-h-[250px]">
-                        <textarea id="dirtyNotesArea" 
-                            class="w-full flex-grow p-4 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
-                            placeholder="Ej: Durante mi experiencia como ingeniero participé en actividades relacionadas con ISO 9001, maquila Magna... Adicionalmente participo en el sector edu..."
-                        ></textarea>
-                    </div>
-                    
-                    <button onclick="polishNotesWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all">
-                        <i class="fa-solid fa-sparkles"></i>
-                        <span>Resumir y Sintetizar</span>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Salida Pulida -->
-            <section class="flex-grow flex flex-col gap-4">
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full justify-between">
-                    <div class="flex flex-col h-full min-h-0">
-                        <div class="flex items-center justify-between mb-3 shrink-0">
-                            <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
-                                <i class="fa-solid fa-circle-check text-tec-lime"></i>
-                                Resumen Estandarizado (Excel)
-                            </h2>
-                            <span class="text-[10px] text-emerald-800 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">Sin Relleno</span>
+                <!-- Matriz de Cuadrantes -->
+                <section class="flex-grow flex flex-col gap-4 min-h-0 relative">
+                    <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-200/60 flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Historial:</span>
+                            <input type="date" id="datePicker" onchange="changeActiveDate()" class="text-xs font-bold text-tec-dark-green bg-tec-sand/40 border border-tec-sand px-2 py-1 rounded focus:outline-none focus:ring-1 focus:ring-tec-teal">
+                            <span id="rolloverIndicator" class="hidden text-[10px] text-tec-lime font-bold bg-tec-lime/10 px-2 py-0.5 rounded border border-tec-lime/20 flex items-center gap-1">
+                                <i class="fa-solid fa-arrows-spin"></i> Rollover Activo
+                            </span>
                         </div>
-                        <p class="text-[11px] text-slate-500 mb-3 shrink-0">
-                            Párrafo limpio, formal y sintetizado. Conserva estrictamente las mayúsculas correctas. Ideal para tu Excel corporativo.
+                        <div class="flex items-center gap-2">
+                            <button onclick="triggerResetConfirmation()" class="text-xs hover:bg-rose-50 text-rose-600 font-semibold px-3 py-1.5 rounded-lg border border-rose-200 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Limpiar Matrices
+                            </button>
+                            <button onclick="copyToClipboard()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-copy"></i> Copiar Plan (Outlook)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="aiLoader" class="hidden bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 flex flex-col items-center justify-center gap-4 text-center absolute inset-0 z-50">
+                        <div class="relative w-12 h-12">
+                            <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                            <div class="absolute inset-0 border-4 border-t-tec-teal rounded-full animate-spin"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-poppins font-bold text-sm text-tec-dark-green mb-1">Analizando Criterios de Atracción de Talento...</h3>
+                            <p class="text-xs text-slate-500">Categorizando según políticas institucionales y SLAs.</p>
+                        </div>
+                    </div>
+
+                    <div id="matrixContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-0 overflow-y-auto pr-1">
+                        <!-- Q1 -->
+                        <div class="matrix-quadrant bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                            <div class="bg-rose-50 border-b border-rose-100/60 px-4 py-3 flex justify-between items-center shrink-0">
+                                <span class="font-poppins font-bold text-xs text-rose-700 flex items-center gap-1.5 uppercase tracking-wide">
+                                    <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+                                    I. Crítico (Políticas, SLAs y Ofertas)
+                                </span>
+                            </div>
+                            <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q1-list"></div>
+                            <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                                <input type="text" id="q1-input" placeholder="Agregar crítico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-rose-400" onkeydown="handleInputKey(event, 'q1')">
+                                <button onclick="addTaskDirect('q1')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <!-- Q2 -->
+                        <div class="matrix-quadrant bg-white rounded-2xl border border-tec-teal/20 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                            <div class="bg-tec-teal/5 border-b border-tec-teal/10 px-4 py-3 flex justify-between items-center shrink-0">
+                                <span class="font-poppins font-bold text-xs text-tec-dark-green flex items-center gap-1.5 uppercase tracking-wide">
+                                    <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
+                                    II. Estratégico (Proyectos y Sourcing)
+                                </span>
+                            </div>
+                            <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q2-list"></div>
+                            <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                                <input type="text" id="q2-input" placeholder="Agregar estratégico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q2')">
+                                <button onclick="addTaskDirect('q2')" class="bg-tec-dark-green hover:bg-tec-teal text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <!-- Q3 -->
+                        <div class="matrix-quadrant bg-white rounded-2xl border border-tec-ice shadow-sm overflow-hidden flex flex-col h-[280px]">
+                            <div class="bg-tec-ice/10 border-b border-tec-ice/20 px-4 py-3 flex justify-between items-center shrink-0">
+                                <span class="font-poppins font-bold text-xs text-teal-800 flex items-center gap-1.5 uppercase tracking-wide">
+                                    <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
+                                    III. Filtrar / Automatizar (SSFF y Chats)
+                                </span>
+                            </div>
+                            <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q3-list"></div>
+                            <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                                <input type="text" id="q3-input" placeholder="Agregar operativo..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q3')">
+                                <button onclick="addTaskDirect('q3')" class="bg-tec-teal hover:bg-teal-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <!-- Q4 -->
+                        <div class="matrix-quadrant bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                            <div class="bg-slate-100 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
+                                <span class="font-poppins font-bold text-xs text-slate-700 flex items-center gap-1.5 uppercase tracking-wide">
+                                    <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+                                    IV. Depurar / Postergar (Admin)
+                                </span>
+                            </div>
+                            <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q4-list"></div>
+                            <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                                <input type="text" id="q4-input" placeholder="Agregar postergable..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400" onkeydown="handleInputKey(event, 'q4')">
+                                <button onclick="addTaskDirect('q4')" class="bg-slate-500 hover:bg-slate-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- SECCIÓN 2: PULIDOR DE NOTAS (POLISHER)             -->
+            <!-- ================================================== -->
+            <div id="tab-polisher" class="tab-content hidden flex flex-col lg:flex-row gap-6 h-full">
+                
+                <!-- Notas en Frío -->
+                <section class="w-full lg:w-[500px] shrink-0 flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                                <i class="fa-solid fa-file-pen text-tec-teal"></i>
+                                Notas en Frío o CV
+                            </h2>
+                            <button onclick="clearDirtyNotesText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-eraser"></i> Limpiar
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">
+                            Pega los apuntes o el "choro" desordenado. La IA lo resumirá, le quitará el relleno y lo dejará directo y profesional.
                         </p>
 
-                        <!-- NOTA EXPLICATIVA SOBRE GOOGLE SITES -->
-                        <div id="networkAlert" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 text-[11px] text-amber-800 leading-relaxed">
-                            <i class="fa-solid fa-circle-exclamation text-amber-500 mr-1.5"></i>
-                            <strong>Atención:</strong> Si ves un error de red o de conexión en esta pantalla, recuerda que <u>Google Sites bloquea las llamadas directas de IA</u> debido a sus contenedores restrictivos de seguridad. Si te ocurre esto, te recomendamos hospedar este mismo archivo HTML en <strong>GitHub Pages</strong> o ejecutarlo localmente desde tu computadora haciendo doble clic en el archivo descargado.
+                        <div class="mb-3">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Perfil Orientado:</label>
+                            <select id="profileTemplate" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal text-slate-700 font-medium">
+                                <option value="general">Reclutamiento General (Tecmilenio)</option>
+                                <option value="asesor">Asesor Académico / Ventas Educativas</option>
+                                <option value="ti">Especialista TI / Ingenierías / Dual</option>
+                                <option value="admin">Administrativo / Mandos Medios</option>
+                            </select>
                         </div>
-
-                        <div id="polisherLoader" class="hidden my-auto flex flex-col items-center justify-center gap-3 py-12">
-                            <div class="h-8 w-8 border-4 border-slate-100 border-t-tec-teal rounded-full animate-spin"></div>
-                            <p class="text-xs text-slate-400 font-medium">Sintetizando y eliminando relleno...</p>
+                        
+                        <div class="relative flex-grow flex flex-col min-h-[250px]">
+                            <textarea id="dirtyNotesArea" 
+                                class="w-full flex-grow p-4 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
+                                placeholder="Ej: Durante mi experiencia como ingeniero participé en actividades relacionadas con ISO 9001, maquila Magna... Adicionalmente participo en el sector edu..."
+                            ></textarea>
                         </div>
-
-                        <!-- CONTENEDOR DE ERROR DETALLADO -->
-                        <div id="polisherErrorContainer" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4 mb-4 text-xs text-rose-800 leading-relaxed overflow-y-auto max-h-[150px]">
-                            <div class="font-bold flex items-center gap-1.5 mb-1 text-rose-700">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                Error de Red / Conexión (Failed to fetch)
-                            </div>
-                            <p class="mb-2">El navegador no pudo conectar con el servidor de la Inteligencia Artificial de Google.</p>
-                            <p class="text-[11px] bg-white/65 p-2 rounded font-mono border border-rose-100">
-                                <strong>Causa típica en Google Sites:</strong> Las restricciones de seguridad del contenedor ("sandbox iframe") de Google Sites impiden que se realicen solicitudes externas. Para solucionarlo, hospeda este código en <strong>GitHub Pages</strong> o ábrelo directamente en tu navegador local.
-                            </p>
-                        </div>
-
-                        <div id="polishedNotesOutputContainer" class="flex-grow flex flex-col min-h-[280px]">
-                            <div id="polishedNotesOutput" class="w-full flex-grow p-4 text-xs bg-tec-sand/15 border border-tec-sand/70 rounded-xl overflow-y-auto whitespace-pre-wrap leading-relaxed text-slate-700 font-medium">Las anotaciones resumidas aparecerán aquí...</div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 pt-3 border-t border-slate-100 shrink-0 flex justify-end gap-3">
-                        <button onclick="copyPolishedToExcel()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm">
-                            <i class="fa-solid fa-copy"></i> Copiar para Celda Excel
+                        
+                        <button onclick="polishNotesWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-solid fa-sparkles"></i>
+                            <span>Resumir y Sintetizar</span>
                         </button>
                     </div>
-                </div>
-            </section>
-        </div>
+                </section>
 
-    </main>
+                <!-- Salida Pulida -->
+                <section class="flex-grow flex flex-col gap-4">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full justify-between">
+                        <div class="flex flex-col h-full min-h-0">
+                            <div class="flex items-center justify-between mb-3 shrink-0">
+                                <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-tec-lime"></i>
+                                    Resumen Estandarizado (Excel)
+                                </h2>
+                                <span class="text-[10px] text-emerald-800 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">Sin Relleno</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mb-3 shrink-0">
+                                Párrafo limpio, formal y sintetizado. Conserva estrictamente las mayúsculas correctas. Ideal para tu Excel corporativo.
+                            </p>
+
+                            <div id="polisherLoader" class="hidden my-auto flex flex-col items-center justify-center gap-3 py-12">
+                                <div class="h-8 w-8 border-4 border-slate-100 border-t-tec-teal rounded-full animate-spin"></div>
+                                <p class="text-xs text-slate-400 font-medium">Sintetizando y eliminando relleno...</p>
+                            </div>
+
+                            <!-- CONTENEDOR DE ERROR DETALLADO CON SOLUCIÓN DIRECTA (DIAGNÓSTICO EN VIVO v1.5.0) -->
+                            <div id="polisherErrorContainer" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4 mb-4 text-xs text-rose-800 leading-relaxed overflow-y-auto max-h-[240px]">
+                                <div class="font-bold flex items-center gap-1.5 mb-1 text-rose-700">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    Alerta de Conexión o Firewall de Red
+                                </div>
+                                <p class="mb-2">El navegador no pudo conectar con el servidor de Google Gemini. Detalle del error:</p>
+                                <p class="text-[11px] bg-white/75 p-2 rounded font-mono border border-rose-100 text-rose-900 mb-3 font-semibold" id="polisherErrorText">
+                                    Error de Conexión (Failed to fetch).
+                                </p>
+                                <div class="text-[11px] bg-white/50 p-2.5 rounded border border-rose-100 space-y-1.5">
+                                    <strong>💡 ¿Cómo resolver este error en 1 minuto?</strong><br>
+                                    1. <strong>¿Estás en la red de la oficina (Tecmilenio/Tec)?</strong> El firewall escolar o corporativo bloquea por seguridad el puerto de Google Cloud API. <strong>Prueba compartiendo datos desde tu celular a tu laptop por un instante</strong> para comprobar si funciona de inmediato.<br>
+                                    2. <strong>¿Usas Adblocker, uBlock o el navegador Brave?</strong> Estos sistemas bloquean de forma agresiva las peticiones directas de Inteligencia Artificial porque las confunden con anuncios. <strong>Desactiva los bloqueadores para esta URL</strong>.<br>
+                                    3. <strong>API Key sin restricciones:</strong> Asegúrate de que la API Key que generaste en Google AI Studio no tenga restricciones de IP o de dominio.
+                                </div>
+                            </div>
+
+                            <div id="polishedNotesOutputContainer" class="flex-grow flex flex-col min-h-[280px]">
+                                <div id="polishedNotesOutput" class="w-full flex-grow p-4 text-xs bg-tec-sand/15 border border-tec-sand/70 rounded-xl overflow-y-auto whitespace-pre-wrap leading-relaxed text-slate-700 font-medium">Las anotaciones resumidas aparecerán aquí...</div>
+                            </div>
+                        </div>
+
+                        <div id="networkAlert" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 text-[11px] text-amber-800 leading-relaxed">
+                            <i class="fa-solid fa-circle-exclamation text-amber-500 mr-1.5"></i>
+                            <strong>Nota de Entorno:</strong> Estás ejecutando el código dentro de un contenedor. Si hay problemas de conexión, te recomendamos usar GitHub Pages directamente.
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 shrink-0 flex justify-end gap-3">
+                            <button onclick="copyPolishedToExcel()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                                <i class="fa-solid fa-copy"></i> Copiar para Celda Excel
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PIE DE PÁGINA CON INDICADOR DE VERSIÓN DE CONTROL DE CACHÉ -->
+    <footer class="bg-slate-100 border-t border-slate-200 py-3 px-6 shrink-0 text-center flex justify-between items-center text-[10px] text-slate-400">
+        <div>Ecosistema de Atracción de Talento | Tecmilenio</div>
+        <div class="font-mono font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded">Versión en GitHub: v1.5.0</div>
+    </footer>
 
     <!-- MODAL DE CONFIGURACIÓN DE API KEY -->
     <div id="apiKeyModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
@@ -325,7 +340,7 @@
                 </button>
             </div>
             <p class="text-xs text-slate-500 mb-4 leading-relaxed">
-                Para utilizar el motor de inteligencia artificial fuera de este chat (como en GitHub Pages o de forma local), ingresa tu clave API gratuita obtenida en <strong>Google AI Studio</strong>.
+                Ingresa tu clave API gratuita obtenida en <strong>Google AI Studio</strong> para habilitar las funciones de Inteligencia Artificial en tu sitio de GitHub Pages.
             </p>
             <div class="space-y-3">
                 <div>
@@ -334,12 +349,31 @@
                 </div>
                 <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/60 text-[10px] text-slate-500 leading-relaxed">
                     <i class="fa-solid fa-circle-info text-tec-teal mr-1"></i>
-                    Tu clave se almacena únicamente en tu propio navegador web (<span class="font-mono bg-slate-200 px-1 rounded">localStorage</span>) de forma local y segura. Nunca se comparte con nadie más.
+                    Tu clave se almacena de forma local e individual en el almacenamiento web privado de tu navegador (<span class="font-mono bg-slate-200 px-1 rounded">localStorage</span>).
                 </div>
             </div>
             <div class="mt-5 flex gap-3">
                 <button onclick="closeApiKeyModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all">Cancelar</button>
                 <button onclick="saveApiKey()" class="flex-grow bg-tec-dark-green hover:bg-tec-teal text-white font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all">Guardar Clave</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRMATION MODAL -->
+    <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 bg-rose-50 border border-rose-100 rounded-xl flex items-center justify-center text-rose-600">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <h3 class="font-poppins font-bold text-slate-800 text-sm">¿Estás completamente segura?</h3>
+            </div>
+            <p class="text-xs text-slate-500 mb-5 leading-relaxed">
+                Esta acción eliminará de forma irreversible todas las tareas y prioridades que tienes registradas para el día de hoy en tus matrices.
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeConfirmModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all">Cancelar</button>
+                <button onclick="confirmClearDayTasks()" class="flex-grow bg-rose-600 hover:bg-rose-700 text-white font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all shadow-sm">Sí, Limpiar Todo</button>
             </div>
         </div>
     </div>
@@ -364,7 +398,6 @@
             loadActiveDate(activeDate);
             updateApiBadge();
             
-            // Mostrar la alerta educativa de Google Sites si detecta que está embebido
             if (window.self !== window.top) {
                 document.getElementById('networkAlert').classList.remove('hidden');
             }
@@ -403,6 +436,22 @@
 
         function closeApiKeyModal() {
             document.getElementById('apiKeyModal').classList.add('hidden');
+        }
+
+        function triggerResetConfirmation() {
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        function confirmClearDayTasks() {
+            dayDatabase[activeDate] = { q1: [], q2: [], q3: [], q4: [], note: dayDatabase[activeDate].note || "" };
+            saveDatabase();
+            renderAllQuadrants();
+            closeConfirmModal();
+            showToast("Matrices limpias con éxito.");
         }
 
         function saveApiKey() {
@@ -546,7 +595,6 @@
                     const response = await fetch(url, options);
                     if (response.ok) return await response.json();
                     
-                    // Si recibimos un error de credenciales/permisos, no seguimos intentando
                     if (response.status === 400 || response.status === 403 || response.status === 401) {
                         const errBody = await response.json().catch(() => ({}));
                         const errMsg = errBody.error?.message || "Error de credenciales de Google API.";
@@ -558,7 +606,7 @@
                 await new Promise(resolve => setTimeout(resolve, delay));
                 delay *= 1.5; 
             }
-            throw new Error("Error de conexión después de múltiples intentos.");
+            throw new Error("No se pudo conectar con el servidor. Revisa tu red o bloqueador de anuncios.");
         }
 
         function toggleTask(quadrant, taskId) {
@@ -589,15 +637,6 @@
         function clearDirtyNotesText() {
             document.getElementById('dirtyNotesArea').value = '';
             showToast("Notas en frío limpias.");
-        }
-
-        function clearDayTasks() {
-            if (confirm("¿Estás segura de borrar todos tus pendientes de la matriz?")) {
-                dayDatabase[activeDate] = { q1: [], q2: [], q3: [], q4: [], note: dayDatabase[activeDate].note || "" };
-                saveDatabase();
-                renderAllQuadrants();
-                showToast("Matrices limpias.");
-            }
         }
 
         function renderQuadrant(quadrant) {
@@ -665,10 +704,10 @@
             document.getElementById('aiLoader').classList.remove('hidden');
             document.getElementById('matrixContainer').classList.add('opacity-40', 'pointer-events-none');
 
-            const modelName = "gemini-1.5-flash"; // Modelo altamente compatible
+            const modelName = "gemini-1.5-flash"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${key}`;
             
-            const systemPrompt = `Actúa como el organizador inteligente de la Especialista de Atracción de Talento en Tecmilenio (Argyris Reyna). Clasifica las tareas bajo la estructura estricta del departamento en formato JSON:
+            const systemPrompt = `Actúa como el organizador de la Especialista de Atracción de Talento en Tecmilenio (Argyris Reyna). Clasifica las tareas bajo la estructura del departamento en formato JSON:
             1. q1: SLAs críticos, ofertas urgentes, cierres de hoy, políticas.
             2. q2: Proyectos estratégicos, Talent pools, diseño de microtests, calibraciones de perfil.
             3. q3: Operación de SuccessFactors (SSFF), agendar llamadas, correos o Whatsapps masivos.
@@ -721,7 +760,7 @@
         }
 
         // ==========================================
-        // LLAMADA IA: PULIDOR DE NOTAS (MEJORADO)
+        // LLAMADA IA: PULIDOR DE NOTAS (FEW-SHOT)
         // ==========================================
         async function polishNotesWithAI() {
             const dirtyText = document.getElementById('dirtyNotesArea').value.trim();
@@ -755,7 +794,7 @@
             
             EJEMPLO DE RESUMEN CORRECTO:
             Entrada sucia: "Durante mi experiencia como ingeniero participé en actividades relacionadas con ISO 9001, maquila Magna... Adicionalmente participo en el sector edu..."
-            Salida pulida de la IA: "exp. en procesos de ingeniería automotriz bajo la norma ISO 9001 en la maquiladora Magna, con experiencia complementaria en la planeación de proyectos dentro del sector educativo."
+            Salida pulida de la IA: "exp. en la aplicación y seguimiento de sistemas de gestión de calidad ISO 9001 en la planta de Magna, con experiencia complementaria en la planeación de proyectos dentro del sector educativo."
             
             Contexto del perfil actual a priorizar: ${profileContext}`;
 
@@ -777,10 +816,12 @@
                 document.getElementById('polishedNotesOutput').textContent = cleanResult;
                 showToast("¡Notas sintetizadas con éxito!");
             } catch (e) {
-                // Capturar el error real y mostrar la advertencia visual detallada
                 console.error(e);
                 
-                // Aplicar el fallback local para no dejar vacía la pantalla
+                // Mostrar el error técnico en vivo
+                document.getElementById('polisherErrorText').textContent = e.message || e.toString();
+                
+                // Procesador local básico de respaldo
                 let processed = dirtyText
                     .replace(/Durante mi experiencia como [^ ]+ en /gi, '')
                     .replace(/participé en actividades relacionadas con el /gi, '')
@@ -793,7 +834,7 @@
                 
                 document.getElementById('polishedNotesOutput').textContent = processed;
                 document.getElementById('polisherErrorContainer').classList.remove('hidden');
-                showToast("Error de conexión. Se utilizó el filtro local de emergencia.");
+                showToast("Filtro local aplicado.");
             } finally {
                 document.getElementById('polisherLoader').classList.add('hidden');
                 document.getElementById('polishedNotesOutputContainer').classList.remove('hidden');
