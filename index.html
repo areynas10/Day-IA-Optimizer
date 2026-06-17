@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recruiting Hub - Argyris Reyna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tec-dark-green': '#00534C', // Pantone 330 C
+                        'tec-teal': '#1EC6BD',       // Pantone 3252 C
+                        'tec-lime': '#26D07C',       // Pantone 7479 C
+                        'tec-sand': '#F9F1E6',       // Pantone 7506 C Al 40%
+                        'tec-ice': '#A1DCDC',        // Pantone 317 C
+                        'tec-slate': '#0F172A',      
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .matrix-quadrant { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .matrix-quadrant:hover { transform: translateY(-2px); box-shadow: 0 12px 20px -8px rgba(0, 83, 76, 0.15); }
+        .tab-btn.active { border-bottom-color: #1EC6BD; color: #1EC6BD; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- HEADER INSTITUCIONAL -->
+    <header class="bg-tec-dark-green text-white py-4 px-6 shadow-md shrink-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 bg-gradient-to-br from-tec-teal to-tec-lime rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
+                </div>
+                <div>
+                    <h1 class="font-poppins font-bold text-lg tracking-wide flex items-center gap-2">
+                        AI Recruiting Hub
+                        <span class="text-xs bg-tec-teal/20 text-tec-teal border border-tec-teal/30 px-2.5 py-0.5 rounded-full font-sans font-semibold">Atracción de Talento</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <!-- CONTROLES GLOBALES -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <button onclick="openApiKeyModal()" id="apiStatusBadge" class="text-xs font-semibold text-rose-500 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-rose-100 transition-colors">
+                    <i class="fa-solid fa-key text-rose-400"></i>
+                    <span>Sin API Key (Haga Clic Aquí)</span>
+                </button>
+                <span class="text-xs text-tec-teal/40 hidden md:inline">|</span>
+                <span class="text-xs font-semibold text-tec-teal bg-tec-teal/10 border border-tec-teal/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-tie text-tec-teal"></i>
+                    Argyris Reyna
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGACIÓN DE SECCIONES -->
+    <nav class="bg-white border-b border-slate-200 shadow-sm shrink-0">
+        <div class="max-w-7xl mx-auto px-6 flex gap-6">
+            <button onclick="switchTab('tab-matrix')" id="btn-tab-matrix" class="tab-btn active py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
+                <i class="fa-solid fa-table-cells-large"></i> Matriz de Prioridades
+            </button>
+            <button onclick="switchTab('tab-polisher')" id="btn-tab-polisher" class="tab-btn py-4 font-poppins font-semibold text-xs uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-tec-dark-green transition-all flex items-center gap-2">
+                <i class="fa-solid fa-sparkles text-tec-teal"></i> Pulidor de Notas
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 min-h-0 relative">
+        
+        <!-- ================================================== -->
+        <!-- SECCIÓN 1: MATRIZ DE PRIORIDADES (EISENHOWER)      -->
+        <!-- ================================================== -->
+        <div id="tab-matrix" class="tab-content flex flex-col lg:flex-row gap-6 h-full">
+            
+            <!-- Vaciado de Mente -->
+            <section class="w-full lg:w-[350px] shrink-0 flex flex-col gap-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full min-h-[350px] lg:min-h-0">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-tec-teal"></i>
+                            Vaciado de Mente
+                        </h2>
+                        <button onclick="clearMindDumpText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-eraser"></i> Limpiar
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">
+                        Escribe tus pendientes del día sin estructura. La IA los interpretará y distribuirá en los cuadrantes institucionales correspondientes.
+                    </p>
+                    <div class="relative flex-grow flex flex-col min-h-[220px]">
+                        <textarea id="mindDumpArea" 
+                            class="w-full flex-grow p-4 text-sm bg-tec-sand/20 border border-tec-sand/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
+                            placeholder="Ejemplo:&#10;- Subir vacante de Coordinador a SSFF.&#10;- Calibrar sueldo con el líder.&#10;- Diseñar el microtest del reto situacional."
+                        ></textarea>
+                    </div>
+                    <button onclick="organizeWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all group">
+                        <i class="fa-solid fa-wand-magic-sparkles group-hover:rotate-12 transition-transform"></i>
+                        <span>Clasificar con IA</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Matriz de Cuadrantes -->
+            <section class="flex-grow flex flex-col gap-4 min-h-0 relative">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-200/60 flex flex-wrap justify-between items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Historial:</span>
+                        <input type="date" id="datePicker" onchange="changeActiveDate()" class="text-xs font-bold text-tec-dark-green bg-tec-sand/40 border border-tec-sand px-2 py-1 rounded focus:outline-none focus:ring-1 focus:ring-tec-teal">
+                        <span id="rolloverIndicator" class="hidden text-[10px] text-tec-lime font-bold bg-tec-lime/10 px-2 py-0.5 rounded border border-tec-lime/20 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-spin"></i> Rollover Activo
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="clearDayTasks()" class="text-xs hover:bg-rose-50 text-rose-600 font-semibold px-3 py-1.5 rounded-lg border border-rose-200 transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> Limpiar Matrices
+                        </button>
+                        <button onclick="copyToClipboard()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-copy"></i> Copiar Plan (Outlook)
+                        </button>
+                    </div>
+                </div>
+
+                <div id="aiLoader" class="hidden bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 flex flex-col items-center justify-center gap-4 text-center absolute inset-0 z-50">
+                    <div class="relative w-12 h-12">
+                        <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-t-tec-teal rounded-full animate-spin"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-poppins font-bold text-sm text-tec-dark-green mb-1">Analizando Criterios de Atracción de Talento...</h3>
+                        <p class="text-xs text-slate-500">Categorizando según políticas institucionales y SLAs.</p>
+                    </div>
+                </div>
+
+                <div id="matrixContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-0 overflow-y-auto pr-1">
+                    <!-- Q1 -->
+                    <div class="matrix-quadrant bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                        <div class="bg-rose-50 border-b border-rose-100/60 px-4 py-3 flex justify-between items-center shrink-0">
+                            <span class="font-poppins font-bold text-xs text-rose-700 flex items-center gap-1.5 uppercase tracking-wide">
+                                <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+                                I. Crítico (Políticas, SLAs y Ofertas)
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q1-list"></div>
+                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                            <input type="text" id="q1-input" placeholder="Agregar crítico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-rose-400" onkeydown="handleInputKey(event, 'q1')">
+                            <button onclick="addTaskDirect('q1')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="matrix-quadrant bg-white rounded-2xl border border-tec-teal/20 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                        <div class="bg-tec-teal/5 border-b border-tec-teal/10 px-4 py-3 flex justify-between items-center shrink-0">
+                            <span class="font-poppins font-bold text-xs text-tec-dark-green flex items-center gap-1.5 uppercase tracking-wide">
+                                <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
+                                II. Estratégico (Proyectos y Sourcing)
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q2-list"></div>
+                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                            <input type="text" id="q2-input" placeholder="Agregar estratégico..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q2')">
+                            <button onclick="addTaskDirect('q2')" class="bg-tec-dark-green hover:bg-tec-teal text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="matrix-quadrant bg-white rounded-2xl border border-tec-ice shadow-sm overflow-hidden flex flex-col h-[280px]">
+                        <div class="bg-tec-ice/10 border-b border-tec-ice/20 px-4 py-3 flex justify-between items-center shrink-0">
+                            <span class="font-poppins font-bold text-xs text-teal-800 flex items-center gap-1.5 uppercase tracking-wide">
+                                <span class="h-2 w-2 rounded-full bg-tec-teal"></span>
+                                III. Filtrar / Automatizar (SSFF y Chats)
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q3-list"></div>
+                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                            <input type="text" id="q3-input" placeholder="Agregar operativo..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal" onkeydown="handleInputKey(event, 'q3')">
+                            <button onclick="addTaskDirect('q3')" class="bg-tec-teal hover:bg-teal-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <!-- Q4 -->
+                    <div class="matrix-quadrant bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[280px]">
+                        <div class="bg-slate-100 border-b border-slate-200 px-4 py-3 flex justify-between items-center shrink-0">
+                            <span class="font-poppins font-bold text-xs text-slate-700 flex items-center gap-1.5 uppercase tracking-wide">
+                                <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+                                IV. Depurar / Postergar (Admin)
+                            </span>
+                        </div>
+                        <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-2" id="q4-list"></div>
+                        <div class="px-4 py-2 bg-slate-50/50 border-t border-slate-100 shrink-0 flex gap-2">
+                            <input type="text" id="q4-input" placeholder="Agregar postergable..." class="w-full text-xs px-2.5 py-1.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400" onkeydown="handleInputKey(event, 'q4')">
+                            <button onclick="addTaskDirect('q4')" class="bg-slate-500 hover:bg-slate-600 text-white px-3 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================================================== -->
+        <!-- SECCIÓN 2: PULIDOR DE NOTAS (POLISHER)             -->
+        <!-- ================================================== -->
+        <div id="tab-polisher" class="tab-content hidden flex flex-col lg:flex-row gap-6 h-full">
+            
+            <!-- Notas en Frío -->
+            <section class="w-full lg:w-[500px] shrink-0 flex flex-col gap-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                            <i class="fa-solid fa-file-pen text-tec-teal"></i>
+                            Notas en Frío o CV
+                        </h2>
+                        <button onclick="clearDirtyNotesText()" class="text-[10px] text-rose-600 hover:bg-rose-50 font-semibold px-2 py-0.5 rounded border border-rose-200 transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-eraser"></i> Limpiar
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">
+                        Pega los apuntes o el "choro" desordenado. La IA lo resumirá, le quitará el relleno y lo dejará directo y profesional.
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Perfil Orientado:</label>
+                        <select id="profileTemplate" class="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-tec-teal text-slate-700 font-medium">
+                            <option value="general">Reclutamiento General (Tecmilenio)</option>
+                            <option value="asesor">Asesor Académico / Ventas Educativas</option>
+                            <option value="ti">Especialista TI / Ingenierías / Dual</option>
+                            <option value="admin">Administrativo / Mandos Medios</option>
+                        </select>
+                    </div>
+                    
+                    <div class="relative flex-grow flex flex-col min-h-[250px]">
+                        <textarea id="dirtyNotesArea" 
+                            class="w-full flex-grow p-4 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal resize-none font-mono leading-relaxed placeholder:text-slate-400"
+                            placeholder="Ej: Durante mi experiencia como ingeniero participé en actividades relacionadas con ISO 9001, maquila Magna... Adicionalmente participo en el sector edu..."
+                        ></textarea>
+                    </div>
+                    
+                    <button onclick="polishNotesWithAI()" class="mt-4 w-full bg-gradient-to-r from-tec-dark-green to-tec-teal hover:from-tec-teal hover:to-tec-dark-green text-white font-poppins font-semibold text-xs py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Resumir y Sintetizar</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Salida Pulida -->
+            <section class="flex-grow flex flex-col gap-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/60 flex flex-col h-full justify-between">
+                    <div class="flex flex-col h-full min-h-0">
+                        <div class="flex items-center justify-between mb-3 shrink-0">
+                            <h2 class="font-poppins font-bold text-sm text-tec-dark-green flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-tec-lime"></i>
+                                Resumen Estandarizado (Excel)
+                            </h2>
+                            <span class="text-[10px] text-emerald-800 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">Sin Relleno</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mb-3 shrink-0">
+                            Párrafo limpio, formal y sintetizado. Conserva estrictamente las mayúsculas correctas. Ideal para tu Excel corporativo.
+                        </p>
+
+                        <!-- NOTA EXPLICATIVA SOBRE GOOGLE SITES -->
+                        <div id="networkAlert" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 text-[11px] text-amber-800 leading-relaxed">
+                            <i class="fa-solid fa-circle-exclamation text-amber-500 mr-1.5"></i>
+                            <strong>Atención:</strong> Si ves un error de red o de conexión en esta pantalla, recuerda que <u>Google Sites bloquea las llamadas directas de IA</u> debido a sus contenedores restrictivos de seguridad. Si te ocurre esto, te recomendamos hospedar este mismo archivo HTML en <strong>GitHub Pages</strong> o ejecutarlo localmente desde tu computadora haciendo doble clic en el archivo descargado.
+                        </div>
+
+                        <div id="polisherLoader" class="hidden my-auto flex flex-col items-center justify-center gap-3 py-12">
+                            <div class="h-8 w-8 border-4 border-slate-100 border-t-tec-teal rounded-full animate-spin"></div>
+                            <p class="text-xs text-slate-400 font-medium">Sintetizando y eliminando relleno...</p>
+                        </div>
+
+                        <!-- CONTENEDOR DE ERROR DETALLADO -->
+                        <div id="polisherErrorContainer" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4 mb-4 text-xs text-rose-800 leading-relaxed overflow-y-auto max-h-[150px]">
+                            <div class="font-bold flex items-center gap-1.5 mb-1 text-rose-700">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                Error de Red / Conexión (Failed to fetch)
+                            </div>
+                            <p class="mb-2">El navegador no pudo conectar con el servidor de la Inteligencia Artificial de Google.</p>
+                            <p class="text-[11px] bg-white/65 p-2 rounded font-mono border border-rose-100">
+                                <strong>Causa típica en Google Sites:</strong> Las restricciones de seguridad del contenedor ("sandbox iframe") de Google Sites impiden que se realicen solicitudes externas. Para solucionarlo, hospeda este código en <strong>GitHub Pages</strong> o ábrelo directamente en tu navegador local.
+                            </p>
+                        </div>
+
+                        <div id="polishedNotesOutputContainer" class="flex-grow flex flex-col min-h-[280px]">
+                            <div id="polishedNotesOutput" class="w-full flex-grow p-4 text-xs bg-tec-sand/15 border border-tec-sand/70 rounded-xl overflow-y-auto whitespace-pre-wrap leading-relaxed text-slate-700 font-medium">Las anotaciones resumidas aparecerán aquí...</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100 shrink-0 flex justify-end gap-3">
+                        <button onclick="copyPolishedToExcel()" class="bg-tec-dark-green hover:bg-tec-teal text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-copy"></i> Copiar para Celda Excel
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE CONFIGURACIÓN DE API KEY -->
+    <div id="apiKeyModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="h-8 w-8 bg-tec-teal/10 rounded-lg flex items-center justify-center text-tec-teal">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="font-poppins font-bold text-slate-800 text-sm">Configuración de Conexión IA</h3>
+                </div>
+                <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4 leading-relaxed">
+                Para utilizar el motor de inteligencia artificial fuera de este chat (como en GitHub Pages o de forma local), ingresa tu clave API gratuita obtenida en <strong>Google AI Studio</strong>.
+            </p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Gemini API Key:</label>
+                    <input type="password" id="apiKeyValueInput" placeholder="Pega tu API Key (AIzaSy...)" class="w-full text-xs px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tec-teal">
+                </div>
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/60 text-[10px] text-slate-500 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-tec-teal mr-1"></i>
+                    Tu clave se almacena únicamente en tu propio navegador web (<span class="font-mono bg-slate-200 px-1 rounded">localStorage</span>) de forma local y segura. Nunca se comparte con nadie más.
+                </div>
+            </div>
+            <div class="mt-5 flex gap-3">
+                <button onclick="closeApiKeyModal()" class="flex-grow bg-slate-100 hover:bg-slate-200 text-slate-600 font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all">Cancelar</button>
+                <button onclick="saveApiKey()" class="flex-grow bg-tec-dark-green hover:bg-tec-teal text-white font-poppins font-semibold text-xs py-2.5 rounded-xl transition-all">Guardar Clave</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 bg-tec-dark-green text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl border border-tec-teal/30 flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <i class="fa-solid fa-circle-check text-tec-lime"></i>
+        <span id="toastText">¡Operación exitosa!</span>
+    </div>
+
+    <!-- CORE SCRIPTS -->
+    <script>
+        let dayDatabase = {};
+        let activeDate = "";
+        
+        // Clave provista automáticamente por el entorno de desarrollo del chat
+        const envApiKey = ""; 
+
+        window.onload = function() {
+            initDatabase();
+            setTodayDate();
+            loadActiveDate(activeDate);
+            updateApiBadge();
+            
+            // Mostrar la alerta educativa de Google Sites si detecta que está embebido
+            if (window.self !== window.top) {
+                document.getElementById('networkAlert').classList.remove('hidden');
+            }
+        }
+
+        function getEffectiveApiKey() {
+            if (envApiKey && envApiKey.trim() !== "") {
+                return envApiKey;
+            }
+            return localStorage.getItem('tecmilenio_gemini_key') || "";
+        }
+
+        function updateApiBadge() {
+            const badge = document.getElementById('apiStatusBadge');
+            const key = getEffectiveApiKey();
+
+            if (envApiKey && envApiKey.trim() !== "") {
+                badge.className = "text-xs font-semibold text-tec-lime bg-tec-lime/10 border border-tec-lime/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5";
+                badge.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> <span>IA Conectada (Nativo Chat)</span>`;
+                badge.disabled = true;
+            } else if (key && key.trim() !== "") {
+                badge.className = "text-xs font-semibold text-tec-teal bg-tec-teal/10 border border-tec-teal/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-tec-teal/20 transition-colors";
+                badge.innerHTML = `<i class="fa-solid fa-key"></i> <span>IA Conectada (Clave Local)</span>`;
+                badge.disabled = false;
+            } else {
+                badge.className = "text-xs font-semibold text-rose-500 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-rose-100 transition-colors cursor-pointer";
+                badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Falta Clave de IA (Configurar)</span>`;
+                badge.disabled = false;
+            }
+        }
+
+        function openApiKeyModal() {
+            document.getElementById('apiKeyValueInput').value = localStorage.getItem('tecmilenio_gemini_key') || "";
+            document.getElementById('apiKeyModal').classList.remove('hidden');
+        }
+
+        function closeApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.add('hidden');
+        }
+
+        function saveApiKey() {
+            const val = document.getElementById('apiKeyValueInput').value.trim();
+            if (val) {
+                localStorage.setItem('tecmilenio_gemini_key', val);
+                showToast("¡Clave de API guardada con éxito!");
+            } else {
+                localStorage.removeItem('tecmilenio_gemini_key');
+                showToast("Se eliminó la clave de API local.");
+            }
+            closeApiKeyModal();
+            updateApiBadge();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(`btn-${tabId}`).classList.add('active');
+        }
+
+        function initDatabase() {
+            const rawDb = localStorage.getItem('tecmilenio_optimizer_db_v3');
+            if (rawDb) {
+                try {
+                    dayDatabase = JSON.parse(rawDb);
+                } catch(e) {
+                    dayDatabase = {};
+                }
+            }
+        }
+
+        function saveDatabase() {
+            localStorage.setItem('tecmilenio_optimizer_db_v3', JSON.stringify(dayDatabase));
+        }
+
+        function setTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            activeDate = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('datePicker').value = activeDate;
+        }
+
+        function loadActiveDate(targetDate) {
+            activeDate = targetDate;
+            document.getElementById('datePicker').value = targetDate;
+
+            if (!dayDatabase[activeDate]) {
+                dayDatabase[activeDate] = { q1: [], q2: [], q3: [], q4: [], note: "" };
+                saveDatabase();
+                checkForTaskRollover(targetDate);
+            }
+
+            document.getElementById('mindDumpArea').value = dayDatabase[activeDate].note || "";
+            renderAllQuadrants();
+        }
+
+        function changeActiveDate() {
+            const pickerVal = document.getElementById('datePicker').value;
+            if (pickerVal) loadActiveDate(pickerVal);
+        }
+
+        function checkForTaskRollover(targetDate) {
+            const dateKeys = Object.keys(dayDatabase).sort();
+            const priorDays = dateKeys.filter(dateKey => dateKey < targetDate).reverse();
+            if (priorDays.length === 0) return;
+
+            let rolloverTasksFound = false;
+            let sourceDate = "";
+
+            for (let i = 0; i < priorDays.length; i++) {
+                const prevDate = priorDays[i];
+                const prevDay = dayDatabase[prevDate];
+                const hasUncompleted = ['q1', 'q2', 'q3', 'q4'].some(q => prevDay[q] && prevDay[q].some(task => !task.completed));
+                if (hasUncompleted) {
+                    sourceDate = prevDate;
+                    break;
+                }
+            }
+
+            if (sourceDate) {
+                const sourceDay = dayDatabase[sourceDate];
+                const targetDay = dayDatabase[targetDate];
+                if (targetDay.rolledOverFrom === sourceDate) return; 
+
+                ['q1', 'q2', 'q3', 'q4'].forEach(q => {
+                    const uncompletedFromSource = sourceDay[q].filter(task => !task.completed);
+                    uncompletedFromSource.forEach(task => {
+                        const alreadyExists = targetDay[q].some(t => t.text === task.text);
+                        if (!alreadyExists) {
+                            targetDay[q].unshift({
+                                id: 'rollover_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5),
+                                text: task.text,
+                                completed: false,
+                                originDate: sourceDate
+                            });
+                            rolloverTasksFound = true;
+                        }
+                    });
+                });
+
+                if (rolloverTasksFound) {
+                    targetDay.rolledOverFrom = sourceDate;
+                    saveDatabase();
+                    const indicator = document.getElementById('rolloverIndicator');
+                    indicator.classList.remove('hidden');
+                }
+            }
+        }
+
+        function addTaskDirect(quadrant) {
+            const inputEl = document.getElementById(`${quadrant}-input`);
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            const newTask = {
+                id: 'task_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5),
+                text: text,
+                completed: false
+            };
+
+            if (!dayDatabase[activeDate][quadrant]) dayDatabase[activeDate][quadrant] = [];
+            dayDatabase[activeDate][quadrant].push(newTask);
+            inputEl.value = '';
+            saveDatabase();
+            renderQuadrant(quadrant);
+            showToast("Pendiente guardado.");
+        }
+
+        function handleInputKey(event, quadrant) {
+            if (event.key === 'Enter') addTaskDirect(quadrant);
+        }
+
+        async function makeApiCallWithRetry(url, options, maxRetries = 3) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return await response.json();
+                    
+                    // Si recibimos un error de credenciales/permisos, no seguimos intentando
+                    if (response.status === 400 || response.status === 403 || response.status === 401) {
+                        const errBody = await response.json().catch(() => ({}));
+                        const errMsg = errBody.error?.message || "Error de credenciales de Google API.";
+                        throw new Error(errMsg);
+                    }
+                } catch (err) {
+                    if (i === maxRetries - 1) throw err;
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 1.5; 
+            }
+            throw new Error("Error de conexión después de múltiples intentos.");
+        }
+
+        function toggleTask(quadrant, taskId) {
+            const task = dayDatabase[activeDate][quadrant].find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                saveDatabase();
+                renderQuadrant(quadrant);
+            }
+        }
+
+        function deleteTask(quadrant, taskId) {
+            dayDatabase[activeDate][quadrant] = dayDatabase[activeDate][quadrant].filter(t => t.id !== taskId);
+            saveDatabase();
+            renderQuadrant(quadrant);
+            showToast("Pendiente eliminado.");
+        }
+
+        function clearMindDumpText() {
+            document.getElementById('mindDumpArea').value = '';
+            if (dayDatabase[activeDate]) {
+                dayDatabase[activeDate].note = "";
+                saveDatabase();
+            }
+            showToast("Vaciado de mente limpio.");
+        }
+
+        function clearDirtyNotesText() {
+            document.getElementById('dirtyNotesArea').value = '';
+            showToast("Notas en frío limpias.");
+        }
+
+        function clearDayTasks() {
+            if (confirm("¿Estás segura de borrar todos tus pendientes de la matriz?")) {
+                dayDatabase[activeDate] = { q1: [], q2: [], q3: [], q4: [], note: dayDatabase[activeDate].note || "" };
+                saveDatabase();
+                renderAllQuadrants();
+                showToast("Matrices limpias.");
+            }
+        }
+
+        function renderQuadrant(quadrant) {
+            const container = document.getElementById(`${quadrant}-list`);
+            container.innerHTML = '';
+            const tasks = dayDatabase[activeDate][quadrant] || [];
+
+            if (tasks.length === 0) {
+                container.innerHTML = `<div class="flex-grow flex flex-col items-center justify-center text-slate-300 py-6">
+                    <i class="fa-solid fa-circle-notch text-2xl mb-1.5 opacity-40 text-tec-teal"></i>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-tec-dark-green/40 font-poppins">Sin pendientes</span>
+                </div>`;
+                return;
+            }
+
+            tasks.forEach(task => {
+                const isRollover = task.id.startsWith('rollover_');
+                const taskDiv = document.createElement('div');
+                taskDiv.className = `flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                    task.completed ? 'bg-slate-50 border-slate-100 text-slate-400' : 'bg-white border-slate-100 hover:border-tec-teal/40'
+                }`;
+                taskDiv.innerHTML = `
+                    <div class="flex items-center gap-2.5 min-w-0 flex-grow">
+                        <button onclick="toggleTask('${quadrant}', '${task.id}')" class="shrink-0 h-5 w-5 rounded-md border flex items-center justify-center transition-colors ${
+                            task.completed ? 'bg-tec-lime border-tec-lime text-white' : 'border-slate-300 hover:border-tec-teal'
+                        }">${task.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}</button>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-xs font-medium truncate ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'}">${task.text}</span>
+                            ${isRollover ? `<span class="text-[8px] text-tec-teal font-semibold font-poppins">Viene de: ${task.originDate}</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="deleteTask('${quadrant}', '${task.id}')" class="text-slate-300 hover:text-rose-500 p-1 transition-colors">
+                        <i class="fa-solid fa-xmark text-[11px]"></i>
+                    </button>
+                `;
+                container.appendChild(taskDiv);
+            });
+        }
+
+        function renderAllQuadrants() {
+            renderQuadrant('q1'); renderQuadrant('q2'); renderQuadrant('q3'); renderQuadrant('q4');
+        }
+
+        document.getElementById('mindDumpArea').addEventListener('input', function() {
+            if (dayDatabase[activeDate]) {
+                dayDatabase[activeDate].note = this.value;
+                saveDatabase();
+            }
+        });
+
+        // ==========================================
+        // LLAMADA IA: MATRIZ DE PRIORIDADES
+        // ==========================================
+        async function organizeWithAI() {
+            const mindDumpText = document.getElementById('mindDumpArea').value.trim();
+            if (!mindDumpText) { showToast("Escribe algunos pendientes primero."); return; }
+
+            const key = getEffectiveApiKey();
+            if (!key || key.trim() === "") {
+                openApiKeyModal();
+                showToast("Por favor, introduce tu API Key primero.");
+                return;
+            }
+
+            document.getElementById('aiLoader').classList.remove('hidden');
+            document.getElementById('matrixContainer').classList.add('opacity-40', 'pointer-events-none');
+
+            const modelName = "gemini-1.5-flash"; // Modelo altamente compatible
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${key}`;
+            
+            const systemPrompt = `Actúa como el organizador inteligente de la Especialista de Atracción de Talento en Tecmilenio (Argyris Reyna). Clasifica las tareas bajo la estructura estricta del departamento en formato JSON:
+            1. q1: SLAs críticos, ofertas urgentes, cierres de hoy, políticas.
+            2. q2: Proyectos estratégicos, Talent pools, diseño de microtests, calibraciones de perfil.
+            3. q3: Operación de SuccessFactors (SSFF), agendar llamadas, correos o Whatsapps masivos.
+            4. q4: Limpieza documental o tareas administrativas de bajo impacto.
+            Devuelve un objeto JSON puro, sin Markdown, con llaves q1, q2, q3, q4 que contengan un array de objetos con la llave "text".`;
+
+            const payload = {
+                contents: [{ parts: [{ text: mindDumpText }] }],
+                generationConfig: { 
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            q1: { type: "ARRAY", items: { type: "OBJECT", properties: { text: { type: "STRING" } } } },
+                            q2: { type: "ARRAY", items: { type: "OBJECT", properties: { text: { type: "STRING" } } } },
+                            q3: { type: "ARRAY", items: { type: "OBJECT", properties: { text: { type: "STRING" } } } },
+                            q4: { type: "ARRAY", items: { type: "OBJECT", properties: { text: { type: "STRING" } } } }
+                        },
+                        required: ["q1", "q2", "q3", "q4"]
+                    }
+                },
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const result = await makeApiCallWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                applyParsedTasks(JSON.parse(jsonText));
+                showToast("¡Matriz organizada!");
+            } catch (e) {
+                applyParsedTasks(parseTasksLocally(mindDumpText));
+                showToast("Se aplicó el orden local de respaldo por error de conexión.");
+            } finally {
+                document.getElementById('aiLoader').classList.add('hidden');
+                document.getElementById('matrixContainer').classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        function applyParsedTasks(parsed) {
+            const mapTasks = (arr) => {
+                if (!arr || !Array.isArray(arr)) return [];
+                return arr.map(item => ({ id: 'task_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5), text: item.text || item, completed: false }));
+            };
+            dayDatabase[activeDate].q1 = [...(dayDatabase[activeDate].q1 || []), ...mapTasks(parsed.q1)];
+            dayDatabase[activeDate].q2 = [...(dayDatabase[activeDate].q2 || []), ...mapTasks(parsed.q2)];
+            dayDatabase[activeDate].q3 = [...(dayDatabase[activeDate].q3 || []), ...mapTasks(parsed.q3)];
+            dayDatabase[activeDate].q4 = [...(dayDatabase[activeDate].q4 || []), ...mapTasks(parsed.q4)];
+            saveDatabase();
+            renderAllQuadrants();
+        }
+
+        // ==========================================
+        // LLAMADA IA: PULIDOR DE NOTAS (MEJORADO)
+        // ==========================================
+        async function polishNotesWithAI() {
+            const dirtyText = document.getElementById('dirtyNotesArea').value.trim();
+            if (!dirtyText) { showToast("Introduce anotaciones en sucio."); return; }
+
+            const key = getEffectiveApiKey();
+            if (!key || key.trim() === "") {
+                openApiKeyModal();
+                showToast("Por favor, introduce tu API Key primero.");
+                return;
+            }
+
+            document.getElementById('polisherLoader').classList.remove('hidden');
+            document.getElementById('polishedNotesOutputContainer').classList.add('hidden');
+            document.getElementById('polisherErrorContainer').classList.add('hidden');
+
+            const templateType = document.getElementById('profileTemplate').value;
+            let profileContext = "";
+            if (templateType === "asesor") profileContext = "Destaca habilidades de venta, metas y prospección.";
+            if (templateType === "ti") profileContext = "Enfócate en mapeo de procesos, modelos duales, Power BI e ISO 9001.";
+            if (templateType === "admin") profileContext = "Resalta control operativo y lineamientos de auditoría.";
+
+            const systemPrompt = `Eres un Editor Experto de Atracción de Talento. Tu objetivo único es RESUMIR, SINTETIZAR Y REESCRIBIR notas sucias de entrevistas en un solo párrafo continuo. NO COPIES EL TEXTO ORIGINAL EXACTO. 
+            
+            REGLAS ESTRICTAS DE TRANSFORMACIÓN:
+            1. ELIMINA LA PAJA: Elimina frases redundantes o de relleno como "Durante mi experiencia como", "Adicionalmente participo en", "actividades relacionadas con el sector educativo", etc.
+            2. INICIO OBLIGATORIO: Comienza la oración obligatoriamente con la palabra "exp. en " en minúsculas.
+            3. MEZCLA CORRECTA DE MAYÚSCULAS/MINÚSCULAS: Escribe de forma natural. NO USES TODO EN MAYÚSCULAS. Solo usa mayúsculas iniciales para siglas de herramientas o marcas (ISO 9001, TI, Power BI, Tecmilenio) y para el inicio de enunciados lógicos.
+            4. UN SOLO PÁRRAFO FLUIDO: Une todas las ideas resumidas usando comas o puntos seguidos. Sin viñetas, guiones ni saltos de línea.
+            5. CORRIGE ERRORES: Corrige faltas ortográficas del texto (ej: "implementacipón" -> "implementación").
+            
+            EJEMPLO DE RESUMEN CORRECTO:
+            Entrada sucia: "Durante mi experiencia como ingeniero participé en actividades relacionadas con ISO 9001, maquila Magna... Adicionalmente participo en el sector edu..."
+            Salida pulida de la IA: "exp. en procesos de ingeniería automotriz bajo la norma ISO 9001 en la maquiladora Magna, con experiencia complementaria en la planeación de proyectos dentro del sector educativo."
+            
+            Contexto del perfil actual a priorizar: ${profileContext}`;
+
+            const userPromptText = `SINTETIZA, CORTA EL RELLENO Y REESCRIBE el siguiente texto siguiendo estrictamente las reglas anteriores:\n\nTEXTO ORIGINAL:\n${dirtyText}`;
+
+            const modelName = "gemini-1.5-flash"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${key}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userPromptText }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const data = await makeApiCallWithRetry(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                let cleanResult = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+                cleanResult = cleanResult.replace(/`|^\*|\*$/g, '');
+                
+                document.getElementById('polishedNotesOutput').textContent = cleanResult;
+                showToast("¡Notas sintetizadas con éxito!");
+            } catch (e) {
+                // Capturar el error real y mostrar la advertencia visual detallada
+                console.error(e);
+                
+                // Aplicar el fallback local para no dejar vacía la pantalla
+                let processed = dirtyText
+                    .replace(/Durante mi experiencia como [^ ]+ en /gi, '')
+                    .replace(/participé en actividades relacionadas con el /gi, '')
+                    .replace(/Adicionalmente, en mi puesto actual dentro del sector educativo, participo en actividades vinculadas con la /gi, '')
+                    .replace(/actuamente/gi, 'Actualmente')
+                    .replace(/implementacipón/gi, 'implementación')
+                    .trim();
+                
+                if (!processed.toLowerCase().startsWith('exp.')) processed = 'exp. en ' + processed;
+                
+                document.getElementById('polishedNotesOutput').textContent = processed;
+                document.getElementById('polisherErrorContainer').classList.remove('hidden');
+                showToast("Error de conexión. Se utilizó el filtro local de emergencia.");
+            } finally {
+                document.getElementById('polisherLoader').classList.add('hidden');
+                document.getElementById('polishedNotesOutputContainer').classList.remove('hidden');
+            }
+        }
+
+        function parseTasksLocally(text) {
+            const lines = text.split('\n');
+            const result = { q1: [], q2: [], q3: [], q4: [] };
+            lines.forEach(line => {
+                const clean = line.replace(/^-\s*/, '').trim();
+                if (!clean) return;
+                const lower = clean.toLowerCase();
+                if (lower.includes('urg') || lower.includes('hoy') || lower.includes('sla') || lower.includes('politica')) result.q1.push({ text: clean });
+                else if (lower.includes('proyec') || lower.includes('disen') || lower.includes('calibr')) result.q2.push({ text: clean });
+                else if (lower.includes('ssff') || lower.includes('chat') || lower.includes('correo') || lower.includes('whats')) result.q3.push({ text: clean });
+                else result.q2.push({ text: clean });
+            });
+            return result;
+        }
+
+        function copyPolishedToExcel() {
+            const txt = document.getElementById('polishedNotesOutput').textContent;
+            navigator.clipboard.writeText(txt);
+            showToast("¡Texto copiado para tu celda de Excel!");
+        }
+
+        function copyToClipboard() {
+            let res = `--- PLANIFICACIÓN ATRACCIÓN DE TALENTO [${activeDate}] ---\n\n`;
+            const format = (title, q) => `* ${title} *\n` + (dayDatabase[activeDate][q].map(t => `  [${t.completed?'X':' '}] ${t.text}`).join('\n') || '  Sin pendientes') + '\n\n';
+            res += format("I. CRÍTICO", "q1") + format("II. ESTRATÉGICO", "q2") + format("III. FILTRAR", "q3") + format("IV. DEPURAR", "q4");
+            navigator.clipboard.writeText(res);
+            showToast("Estructura exportada al portapapeles.");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastText').textContent = msg;
+            toast.className = toast.className.replace('translate-y-20 opacity-0', 'translate-y-0 opacity-100');
+            setTimeout(() => {
+                toast.className = toast.className.replace('translate-y-0 opacity-100', 'translate-y-20 opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
